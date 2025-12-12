@@ -19,6 +19,39 @@ if (screen.width < 400) {
 }
 
 
+// Configure a wavy swim pattern for each fish
+const fishSwimConfigs = [
+    {
+        element: fish1,
+        startOffset: 100,
+        horizontalScale: 1,
+        waveAmplitude: 24,
+        waveFrequency: 0.03,
+    },
+    {
+        element: fish2,
+        startOffset: fish2move,
+        horizontalScale: -0.8,
+        waveAmplitude: 28,
+        waveFrequency: 0.028,
+    },
+    {
+        element: fish3,
+        startOffset: fish3move,
+        horizontalScale: 0.9,
+        waveAmplitude: 22,
+        waveFrequency: 0.032,
+    },
+    {
+        element: fish4,
+        startOffset: fish4move,
+        horizontalScale: -0.7,
+        waveAmplitude: 18,
+        waveFrequency: 0.025,
+    }
+];
+
+
 
 window.addEventListener('scroll', function () {
 
@@ -49,11 +82,12 @@ window.addEventListener('scroll', function () {
         splash.style.top = 20 + value * -0.3 + 'px';
     }
 
-    //Move fishes horizontally
-    fish1.style.right = (value - 100) * 1 + 'px';
-    fish2.style.left = (value - fish2move) * 1 + 'px';
-    fish3.style.right = (value - fish3move) * 1 + 'px';
-    fish4.style.left = (value - fish4move) * 1 + 'px';
+    fishSwimConfigs.forEach((config, index) => {
+        const drift = (value - config.startOffset) * config.horizontalScale;
+        const wave = Math.sin((value + index * 120) * config.waveFrequency) * config.waveAmplitude;
+
+        config.element.style.transform = `translate(${drift}px, ${wave}px)`;
+    });
 })
 
 
